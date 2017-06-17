@@ -63,7 +63,7 @@
        </attribute>
        <layout class="QGridLayout" name="gridLayout_3">
         <item row="0" column="0">
-         <widget class="QWidget" name="widget" native="true"/>
+         <widget class="BRenderWidget" name="widget" native="true"/>
         </item>
        </layout>
       </widget>
@@ -179,6 +179,12 @@
    <class>BSceneEditorWidget</class>
    <extends>QWidget</extends>
    <header>BSceneEditorWidget.h</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>BRenderWidget</class>
+   <extends>QWidget</extends>
+   <header location="global">BRenderWidget.h</header>
    <container>1</container>
   </customwidget>
  </customwidgets>

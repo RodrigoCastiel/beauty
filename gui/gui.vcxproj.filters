@@ -35,6 +35,11 @@
     <Filter Include="BSceneEditorWidget">
       <UniqueIdentifier>{a296b536-b128-4f2b-a490-d1d716ae2e63}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Form Files">
+      <UniqueIdentifier>{99349809-55BA-4b9d-BF79-8FDBB0286EB3}</UniqueIdentifier>
+      <Extensions>ui</Extensions>
+      <ParseFiles>true</ParseFiles>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="BMainWindow\BMainWindow.cpp">
@@ -61,6 +66,15 @@
     <ClCompile Include="BSceneEditorWidget\BSceneEditorWidget.cpp">
       <Filter>BSceneEditorWidget</Filter>
     </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_BRenderWidget.cpp">
+      <Filter>Generated Files\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_BRenderWidget.cpp">
+      <Filter>Generated Files\Release</Filter>
+    </ClCompile>
+    <ClCompile Include="BRenderWidget\BRenderWidget.cpp">
+      <Filter>BRenderWidget</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <CustomBuild Include="BMainWindow\BMainWindow.h">
@@ -78,12 +92,21 @@
     <CustomBuild Include="BSceneEditorWidget\BSceneEditorWidget.ui">
       <Filter>BSceneEditorWidget</Filter>
     </CustomBuild>
+    <CustomBuild Include="BRenderWidget\BRenderWidget.h">
+      <Filter>BRenderWidget</Filter>
+    </CustomBuild>
+    <CustomBuild Include="BRenderWidget\BRenderWidget.ui">
+      <Filter>BRenderWidget</Filter>
+    </CustomBuild>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GeneratedFiles\ui_BMainWindow.h">
       <Filter>Generated Files</Filter>
     </ClInclude>
     <ClInclude Include="GeneratedFiles\ui_BSceneEditorWidget.h">
+      <Filter>Generated Files</Filter>
+    </ClInclude>
+    <ClInclude Include="GeneratedFiles\ui_BRenderWidget.h">
       <Filter>Generated Files</Filter>
     </ClInclude>
   </ItemGroup>
