@@ -6,10 +6,6 @@
       <Extensions>qrc;*</Extensions>
       <ParseFiles>false</ParseFiles>
     </Filter>
-    <Filter Include="Form Files">
-      <UniqueIdentifier>{99349809-55BA-4b9d-BF79-8FDBB0286EB3}</UniqueIdentifier>
-      <Extensions>ui</Extensions>
-    </Filter>
     <Filter Include="Resource Files">
       <UniqueIdentifier>{D9D6E242-F8AF-46E4-B9FD-80ECBC20BA3E}</UniqueIdentifier>
       <Extensions>qrc;*</Extensions>
@@ -33,6 +29,12 @@
     <Filter Include="BMainWindow">
       <UniqueIdentifier>{20f43df2-eaf7-4769-a65b-7e25724a18d6}</UniqueIdentifier>
     </Filter>
+    <Filter Include="BRenderWidget">
+      <UniqueIdentifier>{51c5990f-43f5-4904-8836-5b636b86c8cc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="BSceneEditorWidget">
+      <UniqueIdentifier>{a296b536-b128-4f2b-a490-d1d716ae2e63}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="BMainWindow\BMainWindow.cpp">
@@ -47,6 +49,18 @@
     <ClCompile Include="BMainWindow\main.cpp">
       <Filter>BMainWindow</Filter>
     </ClCompile>
+    <ClCompile Include="GeneratedFiles\qrc_BMainWindow.cpp">
+      <Filter>Generated Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_BSceneEditorWidget.cpp">
+      <Filter>Generated Files\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_BSceneEditorWidget.cpp">
+      <Filter>Generated Files\Release</Filter>
+    </ClCompile>
+    <ClCompile Include="BSceneEditorWidget\BSceneEditorWidget.cpp">
+      <Filter>BSceneEditorWidget</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <CustomBuild Include="BMainWindow\BMainWindow.h">
@@ -55,9 +69,21 @@
     <CustomBuild Include="BMainWindow\BMainWindow.ui">
       <Filter>BMainWindow</Filter>
     </CustomBuild>
+    <CustomBuild Include="Resources\BMainWindow.qrc">
+      <Filter>Resource Files</Filter>
+    </CustomBuild>
+    <CustomBuild Include="BSceneEditorWidget\BSceneEditorWidget.h">
+      <Filter>BSceneEditorWidget</Filter>
+    </CustomBuild>
+    <CustomBuild Include="BSceneEditorWidget\BSceneEditorWidget.ui">
+      <Filter>BSceneEditorWidget</Filter>
+    </CustomBuild>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GeneratedFiles\ui_BMainWindow.h">
+      <Filter>Generated Files</Filter>
+    </ClInclude>
+    <ClInclude Include="GeneratedFiles\ui_BSceneEditorWidget.h">
       <Filter>Generated Files</Filter>
     </ClInclude>
   </ItemGroup>

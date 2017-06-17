@@ -12,4 +12,11 @@ public:
 
 private:
 	Ui::BMainWindowClass ui;
+
+public slots:
+	// Menu bar slots.
+
+	// Quit.
+	void OnActionExit();  
+
 };
