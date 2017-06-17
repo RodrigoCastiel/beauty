@@ -3,5 +3,4 @@
 *.exe
 x64
 GeneratedFiles
-Resources
 .vs
