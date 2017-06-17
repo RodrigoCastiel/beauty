@@ -13,4 +13,11 @@ public:
 
 private:
 	Ui::BSceneEditorWidget ui;
+
+public slots:
+
+	// Scene file methods.
+	void OnNewSceneFile();
+	void OnOpenSceneFile();
+	void OnSaveSceneFile();
 };

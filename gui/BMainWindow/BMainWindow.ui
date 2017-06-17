@@ -63,7 +63,7 @@
        </attribute>
        <layout class="QGridLayout" name="gridLayout_3">
         <item row="0" column="0">
-         <widget class="BRenderWidget" name="widget" native="true"/>
+         <widget class="BRenderWidget" name="renderWidget" native="true"/>
         </item>
        </layout>
       </widget>

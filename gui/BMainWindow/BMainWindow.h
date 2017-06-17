@@ -19,4 +19,7 @@ public slots:
 	// Quit.
 	void OnActionExit();  
 
+	// About.
+	void OnAbout();
+
 };

@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1248</width>
-    <height>446</height>
+    <width>1231</width>
+    <height>819</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -153,11 +153,22 @@
       </layout>
      </item>
      <item>
-      <widget class="QPushButton" name="pb_render">
-       <property name="text">
-        <string>Render</string>
-       </property>
-      </widget>
+      <layout class="QHBoxLayout" name="horizontalLayout_4">
+       <item>
+        <widget class="QPushButton" name="pb_preview">
+         <property name="text">
+          <string>Preview</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QPushButton" name="pb_render">
+         <property name="text">
+          <string>Render</string>
+         </property>
+        </widget>
+       </item>
+      </layout>
      </item>
     </layout>
    </item>
@@ -425,7 +436,7 @@
         <item>
          <widget class="QLabel" name="label_2">
           <property name="text">
-           <string>Config. File</string>
+           <string>Settings</string>
           </property>
          </widget>
         </item>
@@ -480,16 +491,23 @@
          </widget>
         </item>
         <item>
-         <widget class="QPushButton" name="pb_openConfigFile">
+         <widget class="QPushButton" name="pb_saveConfigFile">
           <property name="text">
-           <string>Open</string>
+           <string>Save</string>
           </property>
          </widget>
         </item>
         <item>
-         <widget class="QPushButton" name="pb_saveConfigFile">
+         <widget class="QPushButton" name="pb_loadConfigFile">
           <property name="text">
-           <string>Save</string>
+           <string>Load</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QPushButton" name="pb_newConfigFile">
+          <property name="text">
+           <string>New</string>
           </property>
          </widget>
         </item>

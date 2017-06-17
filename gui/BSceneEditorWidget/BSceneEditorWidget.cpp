@@ -9,3 +9,18 @@ BSceneEditorWidget::BSceneEditorWidget(QWidget *parent)
 BSceneEditorWidget::~BSceneEditorWidget()
 {
 }
+
+void BSceneEditorWidget::OnNewSceneFile()
+{
+
+}
+
+void BSceneEditorWidget::OnOpenSceneFile()
+{
+
+}
+
+void BSceneEditorWidget::OnSaveSceneFile()
+{
+
+}
