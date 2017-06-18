@@ -12,7 +12,6 @@ BMainWindow::BMainWindow(QWidget *parent)
 	connect(ui.actionExit, SIGNAL(triggered()), this, SLOT(OnActionExit()));
 
 	// Settings File.
-	connect(ui.actionNew_Settings, SIGNAL(triggered()),  ui.renderWidget, SLOT(OnNewSettings()));
 	connect(ui.actionSave_Settings, SIGNAL(triggered()), ui.renderWidget, SLOT(OnSaveSettings()));
 	connect(ui.actionLoad_Settings, SIGNAL(triggered()), ui.renderWidget, SLOT(OnLoadSettings()));
 

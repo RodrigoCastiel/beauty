@@ -1,9 +1,14 @@
 #include "BRenderWidget.h"
 
+#include <QFileDialog>
+#include <QMessageBox>
+
 BRenderWidget::BRenderWidget(QWidget *parent)
 	: QWidget(parent)
 {
 	ui.setupUi(this);
+
+	mSettingsFileLoaded = false;
 	
 	QString styleSheet = "background-color: #FFFFFF; color: #000000";
 	ui.lineEdit_imgWidth->setStyleSheet(styleSheet);
@@ -17,7 +22,6 @@ BRenderWidget::BRenderWidget(QWidget *parent)
 	// Setup SIGNAL-SLOT connections.
 
 	// Settings File (push-buttons).
-	connect(ui.pb_newConfigFile, SIGNAL(released()), this, SLOT(OnNewSettings()));
 	connect(ui.pb_saveConfigFile, SIGNAL(released()), this, SLOT(OnSaveSettings()));
 	connect(ui.pb_loadConfigFile, SIGNAL(released()), this, SLOT(OnLoadSettings()));
 
@@ -34,31 +38,55 @@ BRenderWidget::~BRenderWidget()
 
 // === Settings File ====================================================================
 
-void BRenderWidget::OnNewSettings()   // Push-button or action menu.
+void BRenderWidget::OnSaveSettings()
 {
+	if (!mSettingsFileLoaded)
+	{
+		QString filePath = QFileDialog::getSaveFileName(this, tr("Save .config file"), 
+														"", tr("CONFIG (*.config);"));
 
+		if (filePath.isEmpty())
+			return;
+
+		ui.lineEdit_ConfigFile->setText(filePath);
+		mSettingsFileLoaded = true;
+	}
+
+	QString filePath = ui.lineEdit_ConfigFile->text();
+
+	// TODO: write data into config. file.
 }
 
-void BRenderWidget::OnSaveSettings()  // Push-button or action menu.
+void BRenderWidget::OnLoadSettings()
 {
+	QString filePath = QFileDialog::getOpenFileName(this, tr("Open .config file"), 
+													"", tr("CONFIG (*.config);"));
 
-}
+	if (filePath.isEmpty())
+		return;
 
-void BRenderWidget::OnLoadSettings()  // Push-button or action menu.
-{
+	ui.lineEdit_ConfigFile->setText(filePath);
+	mSettingsFileLoaded = true;
 
+	// TODO: load data into GUI (line edits).
 }
 
 // === Render, Output Image and Scene file. =============================================
 
 void BRenderWidget::OnSceneFileBrowse()
 {
+	QString filePath = QFileDialog::getOpenFileName(this, tr("Open .scene file"), "", tr("SCENE (*.scene);"));
 
+	if (!filePath.isEmpty())
+		ui.lineEdit_sceneFile->setText(filePath);
 }
 
 void BRenderWidget::OnOutputImgBrowse()
 {
-
+	QString filePath = QFileDialog::getSaveFileName(this, tr("Render image file"), "", tr("JPEG (*.jpg); PNG (*.png)"));
+	
+	if (!filePath.isEmpty())
+		ui.lineEdit_outputImg->setText(filePath);
 }
 
 void BRenderWidget::OnRender()

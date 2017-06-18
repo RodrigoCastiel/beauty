@@ -486,7 +486,10 @@
            </font>
           </property>
           <property name="text">
-           <string>default.config</string>
+           <string/>
+          </property>
+          <property name="readOnly">
+           <bool>true</bool>
           </property>
          </widget>
         </item>
@@ -501,13 +504,6 @@
          <widget class="QPushButton" name="pb_loadConfigFile">
           <property name="text">
            <string>Load</string>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <widget class="QPushButton" name="pb_newConfigFile">
-          <property name="text">
-           <string>New</string>
           </property>
          </widget>
         </item>

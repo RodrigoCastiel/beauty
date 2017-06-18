@@ -111,7 +111,6 @@
     <addaction name="separator"/>
     <addaction name="actionLoad_Settings"/>
     <addaction name="actionSave_Settings"/>
-    <addaction name="actionNew_Settings"/>
    </widget>
    <widget class="QMenu" name="menuHelp">
     <property name="title">
