@@ -34,11 +34,30 @@ void BSceneEditorWidget::OnNewSceneFile()
 {
 	if (!mIsFileModified)
 	{
-		
+		ui.textEdit_Scene->setPlainText("");
+
+		mIsFileModified = false;
+		mDoesFileExist = false;
 	}
 	else
 	{
-		// TODO. Ask if the user wants to save its file or not.
+		QMessageBox::StandardButton reply;
+		reply = QMessageBox::question(this, "Current Scene not saved", "Do you want to save it?",
+			QMessageBox::Yes | QMessageBox::Cancel | QMessageBox::No );
+		if (reply == QMessageBox::Cancel)
+			return;
+
+		else 
+		{
+			if (reply == QMessageBox::Yes)
+			{
+				this->OnSaveSceneFile();
+			}
+
+			ui.textEdit_Scene->setPlainText("");
+			mIsFileModified = false;
+			mDoesFileExist = false;
+		}
 	}
 }
 
@@ -69,7 +88,7 @@ void BSceneEditorWidget::OnOpenSceneFile()
 			{
 				QTextStream stream( &file );
 				QString content = stream.readAll();
-				ui.textEdit_Scene->setText(content);
+				ui.textEdit_Scene->setPlainText(content);
 			}
 
 			mIsFileModified = false;
@@ -88,7 +107,7 @@ void BSceneEditorWidget::OnOpenSceneFile()
 		{
 			QTextStream stream( &file );
 			QString content = stream.readAll();
-			ui.textEdit_Scene->setText(content);
+			ui.textEdit_Scene->setPlainText(content);
 		}
 
 		mIsFileModified = false;
@@ -104,7 +123,7 @@ void BSceneEditorWidget::OnSaveSceneFile()
 		if ( file.open(QFile::WriteOnly) )
 		{
 			QTextStream stream( &file );
-			stream << ui.textEdit_Scene->toPlainText() << endl;
+			stream << ui.textEdit_Scene->toPlainText();
 		}
 
 		mIsFileModified = false;
@@ -120,7 +139,7 @@ void BSceneEditorWidget::OnSaveSceneFile()
 		if ( file.open(QFile::WriteOnly) )
 		{
 			QTextStream stream( &file );
-			stream << ui.textEdit_Scene->toPlainText() << endl;
+			stream << ui.textEdit_Scene->toPlainText();
 		}
 
 		mDoesFileExist = true;
