@@ -22,10 +22,11 @@ public slots:
 	void OnSaveSceneFile();
 
 private:
+	void UpdateStatusLabel();
+
 	Ui::BSceneEditorWidget ui;
 
 	QString mCurrentFilePath;
-
 	bool mDoesFileExist;
 	bool mIsFileModified;
 };
