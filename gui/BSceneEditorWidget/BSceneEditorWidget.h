@@ -19,7 +19,8 @@ public slots:
 	// Scene file methods.
 	void OnNewSceneFile();
 	void OnOpenSceneFile();
-	void OnSaveSceneFile();
+	void OnSaveSceneFile(bool forceNewName = false);
+	void OnSaveSceneAs();
 
 private:
 	void UpdateStatusLabel();

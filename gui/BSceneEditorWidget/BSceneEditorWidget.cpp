@@ -142,9 +142,9 @@ void BSceneEditorWidget::OnOpenSceneFile()
 	this->UpdateStatusLabel();
 }
 
-void BSceneEditorWidget::OnSaveSceneFile()
+void BSceneEditorWidget::OnSaveSceneFile(bool forceNewName)
 {
-	if (mDoesFileExist)
+	if (mDoesFileExist && !forceNewName)
 	{
 		QFile file( mCurrentFilePath );
 		if ( !file.open(QFile::WriteOnly) )
@@ -182,4 +182,9 @@ void BSceneEditorWidget::OnSaveSceneFile()
 	}
 
 	this->UpdateStatusLabel();
+}
+
+void BSceneEditorWidget::OnSaveSceneAs()
+{
+	this->OnSaveSceneFile(true);
 }

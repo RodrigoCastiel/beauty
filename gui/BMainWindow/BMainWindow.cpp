@@ -24,6 +24,7 @@ BMainWindow::BMainWindow(QWidget *parent)
 	connect(ui.actionNew_Scene, SIGNAL(triggered()),  ui.sceneEditor, SLOT(OnNewSceneFile()));
 	connect(ui.actionOpen_Scene, SIGNAL(triggered()), ui.sceneEditor, SLOT(OnOpenSceneFile()));
 	connect(ui.actionSave_Scene, SIGNAL(triggered()), ui.sceneEditor, SLOT(OnSaveSceneFile()));
+	connect(ui.actionSave_Scene_As, SIGNAL(triggered()), ui.sceneEditor, SLOT(OnSaveSceneAs()));
 
 	// Help > About..
 	connect(ui.actionAbout, SIGNAL(triggered()),  this, SLOT(OnAbout()));
