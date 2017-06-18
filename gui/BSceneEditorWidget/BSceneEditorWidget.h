@@ -11,13 +11,21 @@ public:
 	BSceneEditorWidget(QWidget *parent = Q_NULLPTR);
 	~BSceneEditorWidget();
 
-private:
-	Ui::BSceneEditorWidget ui;
-
 public slots:
+
+	// On text edit changed.
+	void OnTextEdited();
 
 	// Scene file methods.
 	void OnNewSceneFile();
 	void OnOpenSceneFile();
 	void OnSaveSceneFile();
+
+private:
+	Ui::BSceneEditorWidget ui;
+
+	QString mCurrentFilePath;
+
+	bool mDoesFileExist;
+	bool mIsFileModified;
 };
