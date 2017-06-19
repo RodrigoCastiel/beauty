@@ -111,6 +111,7 @@
     <addaction name="separator"/>
     <addaction name="actionLoad_Settings"/>
     <addaction name="actionSave_Settings"/>
+    <addaction name="actionSave_Settings_As"/>
    </widget>
    <widget class="QMenu" name="menuHelp">
     <property name="title">
@@ -190,6 +191,11 @@
    </property>
    <property name="shortcut">
     <string notr="true">Ctrl+Shift+S</string>
+   </property>
+  </action>
+  <action name="actionSave_Settings_As">
+   <property name="text">
+    <string>Save Settings As</string>
    </property>
   </action>
  </widget>

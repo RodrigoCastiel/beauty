@@ -501,6 +501,13 @@
          </widget>
         </item>
         <item>
+         <widget class="QPushButton" name="pb_saveConfigFileAs">
+          <property name="text">
+           <string>Save As</string>
+          </property>
+         </widget>
+        </item>
+        <item>
          <widget class="QPushButton" name="pb_loadConfigFile">
           <property name="text">
            <string>Load</string>

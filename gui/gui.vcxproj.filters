@@ -40,6 +40,9 @@
       <Extensions>ui</Extensions>
       <ParseFiles>true</ParseFiles>
     </Filter>
+    <Filter Include="BModel">
+      <UniqueIdentifier>{dfe00511-5206-4acc-861f-b54263c2a94c}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="BMainWindow\BMainWindow.cpp">
@@ -75,6 +78,9 @@
     <ClCompile Include="BRenderWidget\BRenderWidget.cpp">
       <Filter>BRenderWidget</Filter>
     </ClCompile>
+    <ClCompile Include="BModel\BModel.cpp">
+      <Filter>BModel</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <CustomBuild Include="BMainWindow\BMainWindow.h">
@@ -108,6 +114,9 @@
     </ClInclude>
     <ClInclude Include="GeneratedFiles\ui_BRenderWidget.h">
       <Filter>Generated Files</Filter>
+    </ClInclude>
+    <ClInclude Include="BModel\BModel.h">
+      <Filter>BModel</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

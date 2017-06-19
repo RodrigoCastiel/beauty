@@ -1,0 +1,18 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="parsing">
+      <UniqueIdentifier>{9238be48-6999-4a20-9294-e3f44c199b03}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="parsing\RenderingConfig.h">
+      <Filter>parsing</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="parsing\RenderingConfig.cpp">
+      <Filter>parsing</Filter>
+    </ClCompile>
+  </ItemGroup>
+</Project>

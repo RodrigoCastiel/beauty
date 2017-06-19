@@ -14,6 +14,7 @@ BMainWindow::BMainWindow(QWidget *parent)
 	// Settings File.
 	connect(ui.actionSave_Settings, SIGNAL(triggered()), ui.renderWidget, SLOT(OnSaveSettings()));
 	connect(ui.actionLoad_Settings, SIGNAL(triggered()), ui.renderWidget, SLOT(OnLoadSettings()));
+	connect(ui.actionSave_Settings_As, SIGNAL(triggered()), ui.renderWidget, SLOT(OnSaveSettingsAs()));
 
 	// Render and Preview.
 	connect(ui.actionRender, SIGNAL(triggered()),  ui.renderWidget, SLOT(OnRender()));
