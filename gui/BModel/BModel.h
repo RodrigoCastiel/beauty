@@ -1,27 +1,39 @@
 //  +-----------------------------------------------------+
-//	|	File: BModel.h									  |					
-//	|	Author: Rodrigo Castiel							  |
-//	|	Date: June 18, 2017.						      |
-//	+-----------------------------------------------------+
+//  |   File: BModel.h                                    |
+//  |   Author: Rodrigo Castiel                           |
+//  |   Date: June 18, 2017.                              |
+//  +-----------------------------------------------------+
 #pragma once
 
+#include <QImage>
+
+#include <scene/Scene.h>
+#include <ray_tracer/RayTracer.h>
 #include <parsing/RenderingConfig.h>
 
 class BModel
 {
 public:
-	// === Contructors/Destructor ===
-	BModel();
-	~BModel();
+    // === Contructors/Destructor ===
+    BModel();
+    ~BModel();
 
-	// === Main Methods ===
+    // === Main Methods ===
 
-	// === Setters / Getters ===
+    // Implementing GUI preview/render methods.
+    void Preview();
+    void Render();
 
-	void SetRenderingConfig(const renderer::RenderingConfig & config);
-	const renderer::RenderingConfig & GetRenderingConfig() const;
+    // === Setters / Getters ===
+
+    // Sets/Returns rendering configuration for internal renderers.
+    void SetRenderingConfig(const renderer::RenderingConfig & config);
+    const renderer::RenderingConfig & GetRenderingConfig() const;
 
 private:
-	renderer::RenderingConfig mRenderingConfig;
+    // Renderers:
+    renderer::RayTracer mRayTracer;
 
+    // Buffer:
+    QImage mImgBuffer;
 };

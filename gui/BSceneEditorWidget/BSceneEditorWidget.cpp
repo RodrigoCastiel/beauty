@@ -6,19 +6,19 @@
 #include <QMessageBox>
 
 BSceneEditorWidget::BSceneEditorWidget(QWidget *parent)
-	: QWidget(parent)
+    : QWidget(parent)
 {
-	ui.setupUi(this);
+    ui.setupUi(this);
 
-	QString styleSheet = "background-color: #222222; color: #EEEEEE";
-	ui.textEdit_Scene->setStyleSheet(styleSheet);
-	ui.statusLabel->setStyleSheet(styleSheet);
+    QString styleSheet = "background-color: #222222; color: #EEEEEE";
+    ui.textEdit_Scene->setStyleSheet(styleSheet);
+    ui.statusLabel->setStyleSheet(styleSheet);
 
-	// SIGNAL-SLOT connections.
-	connect(ui.textEdit_Scene, SIGNAL(textChanged()), this, SLOT(OnTextEdited()));
+    // SIGNAL-SLOT connections.
+    connect(ui.textEdit_Scene, SIGNAL(textChanged()), this, SLOT(OnTextEdited()));
 
-	mDoesFileExist = false;
-	mIsFileModified = false;
+    mDoesFileExist = false;
+    mIsFileModified = false;
 }
 
 BSceneEditorWidget::~BSceneEditorWidget()
@@ -28,163 +28,163 @@ BSceneEditorWidget::~BSceneEditorWidget()
 
 void BSceneEditorWidget::UpdateStatusLabel()
 {
-	if (mIsFileModified)
-		ui.statusLabel->setStyleSheet("background-color: #222222; color: #FF2222;");
-	else
-		ui.statusLabel->setStyleSheet("background-color: #222222; color: #EEEEEE;");
+    if (mIsFileModified)
+        ui.statusLabel->setStyleSheet("background-color: #222222; color: #FF2222;");
+    else
+        ui.statusLabel->setStyleSheet("background-color: #222222; color: #EEEEEE;");
 
-	if (mDoesFileExist)
-		ui.statusLabel->setText("File open at '" + mCurrentFilePath + "'");
-	else
-		ui.statusLabel->setText("New scene");
+    if (mDoesFileExist)
+        ui.statusLabel->setText("File open at '" + mCurrentFilePath + "'");
+    else
+        ui.statusLabel->setText("New scene");
 }
 
 void BSceneEditorWidget::OnTextEdited()
 {
-	mIsFileModified = true;
-	this->UpdateStatusLabel();
+    mIsFileModified = true;
+    this->UpdateStatusLabel();
 }
 
 void BSceneEditorWidget::OnNewSceneFile()
 {
-	if (!mIsFileModified)
-	{
-		ui.textEdit_Scene->setPlainText("");
+    if (!mIsFileModified)
+    {
+        ui.textEdit_Scene->setPlainText("");
 
-		mIsFileModified = false;
-		mDoesFileExist = false;
-	}
-	else
-	{
-		QMessageBox::StandardButton reply;
-		reply = QMessageBox::question(this, "Current Scene not saved", "Do you want to save it?",
-			QMessageBox::Yes | QMessageBox::Cancel | QMessageBox::No );
-		if (reply == QMessageBox::Cancel)
-			return;
+        mIsFileModified = false;
+        mDoesFileExist = false;
+    }
+    else
+    {
+        QMessageBox::StandardButton reply;
+        reply = QMessageBox::question(this, "Current Scene not saved", "Do you want to save it?",
+            QMessageBox::Yes | QMessageBox::Cancel | QMessageBox::No );
+        if (reply == QMessageBox::Cancel)
+            return;
 
-		else 
-		{
-			if (reply == QMessageBox::Yes)
-			{
-				this->OnSaveSceneFile();
-			}
+        else 
+        {
+            if (reply == QMessageBox::Yes)
+            {
+                this->OnSaveSceneFile();
+            }
 
-			ui.textEdit_Scene->setPlainText("");
-			mIsFileModified = false;
-			mDoesFileExist = false;
-		}
-	}
+            ui.textEdit_Scene->setPlainText("");
+            mIsFileModified = false;
+            mDoesFileExist = false;
+        }
+    }
 
-	this->UpdateStatusLabel();
+    this->UpdateStatusLabel();
 }
 
 void BSceneEditorWidget::OnOpenSceneFile()
 {
-	if (mIsFileModified)
-	{
-		QMessageBox::StandardButton reply;
-		reply = QMessageBox::question(this, "Current Scene not saved", "Do you want to save it?",
-									  QMessageBox::Yes | QMessageBox::Cancel | QMessageBox::No );
-		if (reply == QMessageBox::Cancel)
-			return;
+    if (mIsFileModified)
+    {
+        QMessageBox::StandardButton reply;
+        reply = QMessageBox::question(this, "Current Scene not saved", "Do you want to save it?",
+                                      QMessageBox::Yes | QMessageBox::Cancel | QMessageBox::No );
+        if (reply == QMessageBox::Cancel)
+            return;
 
-		else 
-		{
-			if (reply == QMessageBox::Yes)
-				this->OnSaveSceneFile();
-			
-			QString filePath = QFileDialog::getOpenFileName(this, tr("Open .scene file"), "", tr("SCENE (*.scene);"));
+        else 
+        {
+            if (reply == QMessageBox::Yes)
+                this->OnSaveSceneFile();
+            
+            QString filePath = QFileDialog::getOpenFileName(this, tr("Open .scene file"), "", tr("SCENE (*.scene);"));
 
-			if (filePath.isEmpty())
-				return;
+            if (filePath.isEmpty())
+                return;
 
-			QFile file( filePath );
-			if ( !file.open(QFile::ReadOnly) )
-			{
-				QMessageBox::information(this, "Warning", 
-					"The file at '" + filePath + "' could not be open!", QMessageBox::Ok);
-				return;
-			}
+            QFile file( filePath );
+            if ( !file.open(QFile::ReadOnly) )
+            {
+                QMessageBox::information(this, "Warning", 
+                    "The file at '" + filePath + "' could not be open!", QMessageBox::Ok);
+                return;
+            }
 
-			QTextStream stream( &file );
-			QString content = stream.readAll();
-			ui.textEdit_Scene->setPlainText(content);
+            QTextStream stream( &file );
+            QString content = stream.readAll();
+            ui.textEdit_Scene->setPlainText(content);
 
-			mIsFileModified = false;
-			mDoesFileExist = true;
-			mCurrentFilePath = filePath;
-		}
-	}
-	else
-	{
-		QString filePath = QFileDialog::getOpenFileName(this, tr("Open .scene file"), "", tr("SCENE (*.scene);"));
+            mIsFileModified = false;
+            mDoesFileExist = true;
+            mCurrentFilePath = filePath;
+        }
+    }
+    else
+    {
+        QString filePath = QFileDialog::getOpenFileName(this, tr("Open .scene file"), "", tr("SCENE (*.scene);"));
 
-		if (filePath.isEmpty())
-			return;
+        if (filePath.isEmpty())
+            return;
 
-		QFile file( filePath );
-		if ( !file.open(QFile::ReadOnly) )
-		{
-			QMessageBox::information(this, "Warning", 
-				"The file at '" + filePath + "' could not be open!", QMessageBox::Ok);
-			return;
-		}
+        QFile file(filePath);
+        if (!file.open(QFile::ReadOnly))
+        {
+            QMessageBox::information(this, "Warning",
+                "The file at '" + filePath + "' could not be open!", QMessageBox::Ok);
+            return;
+        }
 
-		QTextStream stream( &file );
-		QString content = stream.readAll();
-		ui.textEdit_Scene->setPlainText(content);
+        QTextStream stream(&file);
+        QString content = stream.readAll();
+        ui.textEdit_Scene->setPlainText(content);
 
-		mIsFileModified = false;
-		mDoesFileExist = true;
-		mCurrentFilePath = filePath;
-	}
+        mIsFileModified = false;
+        mDoesFileExist = true;
+        mCurrentFilePath = filePath;
+    }
 
-	this->UpdateStatusLabel();
+    this->UpdateStatusLabel();
 }
 
 void BSceneEditorWidget::OnSaveSceneFile(bool forceNewName)
 {
-	if (mDoesFileExist && !forceNewName)
-	{
-		QFile file( mCurrentFilePath );
-		if ( !file.open(QFile::WriteOnly) )
-		{
-			QMessageBox::information(this, "Warning", 
-				"The file at '" + mCurrentFilePath + "' could not be written!", QMessageBox::Ok);
-			return;
-		}
+    if (mDoesFileExist && !forceNewName)
+    {
+        QFile file( mCurrentFilePath );
+        if ( !file.open(QFile::WriteOnly) )
+        {
+            QMessageBox::information(this, "Warning", 
+                "The file at '" + mCurrentFilePath + "' could not be written!", QMessageBox::Ok);
+            return;
+        }
 
-		QTextStream stream( &file );
-		stream << ui.textEdit_Scene->toPlainText();
-		mIsFileModified = false;
-	}
-	else
-	{
-		QString filePath = QFileDialog::getSaveFileName(this, tr("Save .scene file"), "", tr("SCENE (*.scene);"));
+        QTextStream stream( &file );
+        stream << ui.textEdit_Scene->toPlainText();
+        mIsFileModified = false;
+    }
+    else
+    {
+        QString filePath = QFileDialog::getSaveFileName(this, tr("Save .scene file"), "", tr("SCENE (*.scene);"));
 
-		if (filePath.isEmpty())
-			return;
+        if (filePath.isEmpty())
+            return;
 
-		QFile file( filePath );
-		if ( !file.open(QFile::WriteOnly) )
-		{
-			QMessageBox::information(this, "Warning", 
-				"The file at '" + mCurrentFilePath + "' could not be written!", QMessageBox::Ok);
-			return;
-		}
-		
-		QTextStream stream( &file );
-		stream << ui.textEdit_Scene->toPlainText();
+        QFile file( filePath );
+        if ( !file.open(QFile::WriteOnly) )
+        {
+            QMessageBox::information(this, "Warning", 
+                "The file at '" + mCurrentFilePath + "' could not be written!", QMessageBox::Ok);
+            return;
+        }
+        
+        QTextStream stream( &file );
+        stream << ui.textEdit_Scene->toPlainText();
 
-		mDoesFileExist = true;
-		mIsFileModified = false;
-		mCurrentFilePath = filePath;
-	}
+        mDoesFileExist = true;
+        mIsFileModified = false;
+        mCurrentFilePath = filePath;
+    }
 
-	this->UpdateStatusLabel();
+    this->UpdateStatusLabel();
 }
 
 void BSceneEditorWidget::OnSaveSceneAs()
 {
-	this->OnSaveSceneFile(true);
+    this->OnSaveSceneFile(true);
 }

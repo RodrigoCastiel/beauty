@@ -4,15 +4,33 @@
     <Filter Include="parsing">
       <UniqueIdentifier>{9238be48-6999-4a20-9294-e3f44c199b03}</UniqueIdentifier>
     </Filter>
+    <Filter Include="scene">
+      <UniqueIdentifier>{4402b42c-57f0-409d-b96f-c0fd34955904}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ray_tracer">
+      <UniqueIdentifier>{145223f7-1d1f-4cf4-b352-10426eea2e25}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="parsing\RenderingConfig.h">
       <Filter>parsing</Filter>
     </ClInclude>
+    <ClInclude Include="scene\Scene.h">
+      <Filter>scene</Filter>
+    </ClInclude>
+    <ClInclude Include="ray_tracer\RayTracer.h">
+      <Filter>ray_tracer</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="parsing\RenderingConfig.cpp">
       <Filter>parsing</Filter>
+    </ClCompile>
+    <ClCompile Include="scene\Scene.cpp">
+      <Filter>scene</Filter>
+    </ClCompile>
+    <ClCompile Include="ray_tracer\RayTracer.cpp">
+      <Filter>ray_tracer</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

@@ -12,12 +12,24 @@ BModel::~BModel()
 
 }
 
+void BModel::Preview()
+{
+
+}
+
+void BModel::Render()
+{
+
+}
+
 void BModel::SetRenderingConfig(const RenderingConfig & config)
 {
-	mRenderingConfig = config;
+    mRayTracer.SetRenderingConfig(config);
+
+    // TODO(Rodrigo Castiel): update QImage size.
 }
 
 const RenderingConfig & BModel::GetRenderingConfig() const
 {
-	return mRenderingConfig;
+    return mRayTracer.GetRenderingConfig();
 }
