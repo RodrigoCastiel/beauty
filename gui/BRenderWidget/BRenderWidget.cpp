@@ -31,11 +31,20 @@ BRenderWidget::BRenderWidget(QWidget *parent)
     connect(ui.pb_browseOutputImg, SIGNAL(released()), this, SLOT(OnOutputImgBrowse()));
     connect(ui.pb_render, SIGNAL(released()), this, SLOT(OnRender()));
     connect(ui.pb_preview, SIGNAL(released()), this, SLOT(OnPreview()));
+
+    mGraphicsScene = new QGraphicsScene();
+    //QGraphicsPixmapItem* item = new QGraphicsPixmapItem(QPixmap::fromImage(image));
+    
+    // Add item for visualizing rendered image.
+    mImageViewerItem = new QGraphicsPixmapItem();
+    ui.imageView->setScene(mGraphicsScene);
+    mGraphicsScene->addItem(mImageViewerItem);
 }
 
 BRenderWidget::~BRenderWidget()
 {
-
+    delete mImageViewerItem;
+    delete mGraphicsScene;
 }
 
 // === Settings File ====================================================================
@@ -156,7 +165,16 @@ void BRenderWidget::OnOutputImgBrowse()
 
 void BRenderWidget::OnRender()
 {
-    mModel.Render();
+    try
+    {
+        mModel.Render();
+        const QImage & renderedImage = mModel.GetImage();
+        mImageViewerItem->setPixmap(QPixmap::fromImage(renderedImage));
+    }
+    catch (RenderingException & e)
+    {
+        // TODO: show some pop-up in case of error.
+    }
 }
 
 void BRenderWidget::OnPreview()

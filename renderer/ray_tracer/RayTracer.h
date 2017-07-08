@@ -6,12 +6,11 @@
 #pragma once
 
 #include "../scene/Scene.h"
+#include "../img_buffer/ImgBuffer.h"
 #include "../parsing/RenderingConfig.h"
 
 namespace renderer
 {
-
-using uchar = unsigned char;
 
 class RayTracer
 {
@@ -21,16 +20,16 @@ public:
     // Performs Ray Tracing algorithm and outputs to input image buffer.
     // imgBuffer dimensions must be at least w x h (in rendering config).
     // imgBuffer must follow the 32-bit format '0xAARRGGBB'.
-    void Render(const Scene & scene, uchar * imgBuffer);
+    void Render(const Scene & scene, ImgBuffer && imgBuffer);
 
     // Performs a parallel Ray Tracing algorithm using 'numThreads'.
-    void ParallelRender(const Scene & scene,  uchar * imgBuffer, 
-        int numThreads = 8);
+    void ParallelRender(const Scene & scene, ImgBuffer && imgBuffer, 
+                        int numThreads = 8);
 
     // Performs an adaptive anti-aliasing Ray Tracing on input buffer to
     // enhance details. The image must be rendered prior to this call.
-    void AdaptiveAntiAliasing(const Scene & scene,  uchar * imgBuffer,
-        int numThreads = 8, int numSuperSample = 8);
+    void AdaptiveAntiAliasing(const Scene & scene, ImgBuffer && imgBuffer,
+                              int numThreads = 8, int numSuperSample = 8);
 
     // +++++ Getters / Setters +++++ ------------------------------------------
 

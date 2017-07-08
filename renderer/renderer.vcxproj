@@ -19,6 +19,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="img_buffer\ImgBuffer.h" />
     <ClInclude Include="parsing\RenderingConfig.h" />
     <ClInclude Include="ray_tracer\RayTracer.h" />
     <ClInclude Include="scene\Scene.h" />

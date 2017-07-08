@@ -1,6 +1,7 @@
 #pragma once
 
 #include <QWidget>
+#include <QGraphicsPixmapItem>
 #include "ui_BRenderWidget.h"
 
 #include "BModel/BModel.h"
@@ -31,6 +32,10 @@ private:
     // Internal model (MVC design pattern).
     BModel mModel;
 
-    bool mSettingsFileLoaded;
+    // Image Rendering UI.
+    QGraphicsScene* mGraphicsScene;
+    QGraphicsPixmapItem* mImageViewerItem;
 
+    // Status of config. file.
+    bool mSettingsFileLoaded;
 };

@@ -10,6 +10,9 @@
     <Filter Include="ray_tracer">
       <UniqueIdentifier>{145223f7-1d1f-4cf4-b352-10426eea2e25}</UniqueIdentifier>
     </Filter>
+    <Filter Include="img_buffer">
+      <UniqueIdentifier>{24d900d1-ecea-4340-8c0e-6766e46e5543}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="parsing\RenderingConfig.h">
@@ -20,6 +23,9 @@
     </ClInclude>
     <ClInclude Include="ray_tracer\RayTracer.h">
       <Filter>ray_tracer</Filter>
+    </ClInclude>
+    <ClInclude Include="img_buffer\ImgBuffer.h">
+      <Filter>img_buffer</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
