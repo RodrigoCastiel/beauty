@@ -134,6 +134,7 @@ void BRenderWidget::OnSaveSettingsAs()
     config.SetImgHeight(ui.lineEdit_imgHeight->text().toInt());
     config.SetRecursionDepth(ui.lineEdit_recursionDepth->text().toInt());
     config.SetAntiAliasingOn(ui.checkBox_antiAliasing->isChecked());
+    mModel.SetRenderingConfig(config);
 
     // Write into file.
     bool success = config.SaveIntoFile(filePath.toStdString());
@@ -151,8 +152,10 @@ void BRenderWidget::OnSceneFileBrowse()
 {
     QString filePath = QFileDialog::getOpenFileName(this, tr("Open .scene file"), "", tr("SCENE (*.scene);"));
 
-    if (!filePath.isEmpty())
+    if (!filePath.isEmpty()) {
         ui.lineEdit_sceneFile->setText(filePath);
+        mModel.SetInputSceneFilePath(filePath.toStdString());
+    }
 }
 
 void BRenderWidget::OnOutputImgBrowse()
@@ -167,6 +170,14 @@ void BRenderWidget::OnRender()
 {
     try
     {
+        // Extract data from UI form.
+        renderer::RenderingConfig config;
+        config.SetImgWidth(ui.lineEdit_imgWidth->text().toInt());
+        config.SetImgHeight(ui.lineEdit_imgHeight->text().toInt());
+        config.SetRecursionDepth(ui.lineEdit_recursionDepth->text().toInt());
+        config.SetAntiAliasingOn(ui.checkBox_antiAliasing->isChecked());
+        mModel.SetRenderingConfig(config);
+
         mModel.Render();
         const QImage & renderedImage = mModel.GetImage();
         mImageViewerItem->setPixmap(QPixmap::fromImage(renderedImage));

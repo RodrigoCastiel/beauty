@@ -19,21 +19,25 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="geometries\MathFunctions.h" />
+    <ClInclude Include="geometries\Primitives.h" />
     <ClInclude Include="img_buffer\ImgBuffer.h" />
     <ClInclude Include="parsing\RenderingConfig.h" />
     <ClInclude Include="ray_tracer\RayTracer.h" />
+    <ClInclude Include="scene\Camera.h" />
     <ClInclude Include="scene\Scene.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="geometries\MathFunctions.cpp" />
     <ClCompile Include="parsing\RenderingConfig.cpp" />
     <ClCompile Include="ray_tracer\RayTracer.cpp" />
+    <ClCompile Include="scene\Camera.cpp" />
     <ClCompile Include="scene\Scene.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{3359DD1A-3F89-4FBD-89D4-7E06A0E4FC4A}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
     <RootNamespace>renderer</RootNamespace>
-    <WindowsTargetPlatformVersion>8.1</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
@@ -80,7 +84,12 @@
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
-  <PropertyGroup />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <IncludePath>$(IncludePath)</IncludePath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <IncludePath>$(IncludePath)</IncludePath>
+  </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
       <PrecompiledHeader>

@@ -41,6 +41,9 @@ public:
 
     // === Setters / Getters ===
 
+    // Sets current input scene file path (for rendering).
+    void SetInputSceneFilePath(const std::string & filePath) { mSceneFilePath = filePath; }
+
     // Returns current image.
     const QImage & GetImage() const { return mImage; }
 
@@ -49,6 +52,9 @@ public:
     const renderer::RenderingConfig & GetRenderingConfig() const;
 
 private:
+    // Input data for renderer.
+    std::string mSceneFilePath;
+
     // Renderers:
     renderer::RayTracer mRayTracer;
 

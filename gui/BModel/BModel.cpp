@@ -1,5 +1,7 @@
 #include "BModel.h"
 
+#include <iostream>
+
 using renderer::RenderingConfig;
 
 BModel::BModel()
@@ -23,9 +25,16 @@ void BModel::Render()
 {
     // Load and parse scene file.
     renderer::Scene scene;
+    bool success = scene.Load(mSceneFilePath);
     // TODO.
 
+    if (!success)
+    {
+        throw RenderingException("ERROR - parsing scene file.");
+    }
+
     // Render using current configurations.
+    scene.Log(std::cout);
     int w = mRayTracer.GetRenderingConfig().GetImgWidth();
     int h = mRayTracer.GetRenderingConfig().GetImgHeight();
 

@@ -23,7 +23,7 @@ public:
     void Render(const Scene & scene, ImgBuffer && imgBuffer);
 
     // Performs a parallel Ray Tracing algorithm using 'numThreads'.
-    void ParallelRender(const Scene & scene, ImgBuffer && imgBuffer, 
+    void ParallelRender(const Scene & scene, ImgBuffer && imgBuffer,
                         int numThreads = 8);
 
     // Performs an adaptive anti-aliasing Ray Tracing on input buffer to
