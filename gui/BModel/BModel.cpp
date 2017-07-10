@@ -37,8 +37,8 @@ void BModel::Render()
     scene.Log(std::cout);
     int w = mRayTracer.GetRenderingConfig().GetImgWidth();
     int h = mRayTracer.GetRenderingConfig().GetImgHeight();
-
-    mRayTracer.Render(scene, { mImgBuffer.data(), w, h });
+    renderer::ImgBuffer imgBuffer = {mImgBuffer.data(), w, h};
+    mRayTracer.Render(scene, imgBuffer);
 }
 
 void BModel::SetRenderingConfig(const RenderingConfig & config)

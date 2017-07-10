@@ -2,6 +2,7 @@ amb: 0.2 0.2 0.2
 camera
 pos: 0.0 -.4 3.0
 rot: 0.0 0.0 0.0
+scale: 1.0
 
 n_refr 1.25
 sphere

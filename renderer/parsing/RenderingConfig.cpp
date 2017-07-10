@@ -25,8 +25,10 @@ bool RenderingConfig::LoadFromFile(const std::string & filePath)
             mHeight = value;
         else if (property == "depth")
             mRecursionDepth = (value > 0) ? value : 1;
-        else if (property == "anti-aliasing") 
+        else if (property == "anti-aliasing")
             mAntiAliasing = (value != 0);
+        else if (property == "num-threads")
+            mNumThreads = (value > 0) ? value : 1;
     }
 
     return true;
@@ -42,6 +44,7 @@ bool RenderingConfig::SaveIntoFile(const std::string & filePath)
     file << "h " << mHeight << std::endl;
     file << "depth " << mRecursionDepth << std::endl;
     file << "anti-aliasing " << mAntiAliasing << std::endl;
+    file << "num-threads " << mNumThreads << std::endl;
 
     return true;
 }

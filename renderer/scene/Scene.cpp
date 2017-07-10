@@ -10,116 +10,6 @@
 namespace renderer
 {
 
-glm::vec3 Scene::TraceRay(const glm::vec3 & r, const glm::vec3 & O, int depth) const
-{
-    if (depth > 0)
-    {
-        float t_triangle, t_sphere;
-        glm::vec3 intersection, barycentric;
-        glm::vec3 intersectionSphere, normalSphere;
-
-        int nearestTriangleIndex = Scene::NearestTriangle(r, O, intersection, barycentric, t_triangle);
-        int nearestSphereIndex = Scene::NearestSphere(r, O, intersectionSphere, normalSphere, t_sphere);
-
-        glm::vec3 f_pos, n, Kd, Ks;
-        float alpha, n_refr = 1.0f;
-
-        // Triangle only or triangle closer than sphere.
-        if (((nearestTriangleIndex != -1) && (nearestSphereIndex == -1))
-         || ((nearestTriangleIndex != -1) && (nearestSphereIndex != -1) && t_triangle <= t_sphere))
-        {
-            const Triangle& triangle = mTriangles[nearestTriangleIndex];
-            const TriangleAttrib& attrib = mTriangleAttribList[nearestTriangleIndex];
-
-            f_pos = triangle.v[0] * barycentric[0]
-                + triangle.v[1] * barycentric[1]
-                + triangle.v[2] * barycentric[2];
-            n = glm::normalize(attrib.n * barycentric);
-            Kd = attrib.Kd * barycentric;
-            Ks = attrib.Ks * barycentric;
-            alpha = glm::dot(attrib.shininess, barycentric);
-            n_refr = attrib.n_refr;
-        }
-        // Sphere only or sphere closer than triangle.
-        else if (((nearestTriangleIndex == -1) && (nearestSphereIndex != -1))
-              || ((nearestTriangleIndex != -1) && (nearestSphereIndex != -1) && t_sphere < t_triangle))
-        {
-            const SphereAttrib& attrib = mSphereAttribList[nearestSphereIndex];
-
-            f_pos = intersectionSphere;
-            n = normalSphere;
-            Kd = attrib.Kd;
-            Ks = attrib.Ks;
-            alpha = attrib.shininess;
-            n_refr = attrib.n_refr;
-        }
-        else // No intersection.
-        {
-            return mBackgroundColor;
-        }
-
-        glm::vec3 abs_color = Scene::ComputePhongIllumination(f_pos, n, Kd, Ks, alpha);
-
-        if (depth == 1)
-        {
-            return abs_color * (glm::vec3(1) - Ks);
-        }
-        else
-        {
-            /* Calculating Reflection and Refraction */
-            // Reference: 
-            // http://graphics.stanford.edu/courses/cs148-10-summer/docs/2006--degreve--reflection_refraction.pdf
-
-            glm::vec3 refracted_color(0.0f);
-            glm::vec3 reflected_color(0.0f);
-
-            // Reflect if specular coefficient is non-zero.
-            if (Ks[0] > kEpsilon && Ks[1] > kEpsilon && Ks[2] > kEpsilon)
-            {
-                reflected_color = Scene::TraceRay(glm::normalize(glm::reflect(r, n)), f_pos, depth - 1);
-            }
-
-            float n_1 = 1.00f;   // Air.
-            float n_2 = n_refr;   //n_refr;  // Index of refraction of the sphere.
-                                    // Reflectance and transmittance.
-            float R = 1.0f, T = 0.0f;
-
-            if (std::abs(n_2 - n_1) > kEpsilon)  // Different indices of refraction.
-            {
-                float cos_ti = -glm::dot(r, n);
-
-                if (cos_ti < 0.0f)  // From out to in.
-                {
-                    std::swap(n_1, n_2);
-                }
-                float ratio_n = n_1 / n_2;
-                float sin2_tt = ratio_n*ratio_n*(1.0f - cos_ti*cos_ti);
-                float cos_tt = (float)sqrt(1.0f - sin2_tt);
-
-                float R0 = std::pow((n_1 - n_2) / (n_1 + n_2), 2.0f);
-
-                // Reflectance.
-                float one_minus_cos_ti = (1 - cos_ti);
-                //float power = pow(one_minus_cos_ti, 3.0);
-                R = R0 + (1.0f - R0)*one_minus_cos_ti;
-
-                // Transmittance.
-                T = 1.0f - R;
-
-                glm::vec3 refr_r = glm::normalize(ratio_n*r + (ratio_n*cos_ti - cos_tt) * n);
-                refracted_color = Scene::TraceRay(refr_r, f_pos, depth - 1);
-            }
-
-
-            return  Ks * (R*reflected_color + T*refracted_color) + (glm::vec3(1.0f) - Ks) * abs_color;
-        }
-    }
-    else
-    {
-        return mBackgroundColor;
-    }
-}
-
 glm::vec3 Scene::ComputePhongIllumination(const glm::vec3 & f_pos, const glm::vec3 & n,
     const glm::vec3 & Kd, const glm::vec3 & Ks, float alpha) const
 {
@@ -131,7 +21,6 @@ glm::vec3 Scene::ComputePhongIllumination(const glm::vec3 & f_pos, const glm::ve
     for (auto& light : mLights)
     {
         glm::vec3 l = glm::normalize(light.pos - f_pos);  // Vector from frag to light.
-
         glm::vec3 intersection, temp;
         float t_triangle, t_sphere;
 
@@ -146,7 +35,7 @@ glm::vec3 Scene::ComputePhongIllumination(const glm::vec3 & f_pos, const glm::ve
 
             // Basic lighting - Phong model.
             Id += light.col * Kd * std::max(dot_l_n, 0.0f);
-            Is += light.col * Ks * std::pow(std::max(dot_l_r, 0.0f), alpha);
+            //Is += light.col * Ks * std::pow(std::max(dot_l_r, 0.0f), alpha);
         }
     }
 
@@ -398,14 +287,16 @@ bool Scene::Load(const std::string & filePath, std::string & outputMessage)
         else if (type == "camera")
         {
             glm::vec3 pos, rot;
+            float scale = 1.0f;
 
             if (ParseAttribute(file, "pos:", pos, outputMessage) &&
-                ParseAttribute(file, "rot:", rot, outputMessage)
+                ParseAttribute(file, "rot:", rot, outputMessage) &&
+                ParseAttribute(file, "scale:", scale, outputMessage)
                 )  // Success - new camera configuration.
             {
                 mCamera.SetPosition(pos);
                 mCamera.SetRotation(rot);
-
+                mCamera.SetScale(scale);
             }
         }
         // INSERT HERE NEW TYPES OF OBJECT.

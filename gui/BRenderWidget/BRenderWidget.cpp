@@ -18,6 +18,7 @@ BRenderWidget::BRenderWidget(QWidget *parent)
     ui.lineEdit_sceneFile->setStyleSheet(styleSheet);
     ui.lineEdit_ConfigFile->setStyleSheet(styleSheet);
     ui.lineEdit_outputImg->setStyleSheet(styleSheet);
+    ui.lineEdit_NumThreads->setStyleSheet(styleSheet);
 
     // Setup SIGNAL-SLOT connections.
 
@@ -54,7 +55,7 @@ void BRenderWidget::OnSaveSettings()
     if (!mSettingsFileLoaded)  // No file was loaded - ask a new one.
     {
         QString filePath = QFileDialog::getSaveFileName(this, tr("Save .config file"), 
-                                                        "", tr("CONFIG (*.config);"));
+                                                        "",   tr("CONFIG (*.config);"));
 
         if (filePath.isEmpty())
             return;
@@ -72,6 +73,7 @@ void BRenderWidget::OnSaveSettings()
     config.SetImgHeight(ui.lineEdit_imgHeight->text().toInt());
     config.SetRecursionDepth(ui.lineEdit_recursionDepth->text().toInt());
     config.SetAntiAliasingOn(ui.checkBox_antiAliasing->isChecked());
+    config.SetNumThreads(ui.lineEdit_NumThreads->text().toInt());
 
     // Write into file.
     bool success = config.SaveIntoFile(filePath.toStdString());
@@ -111,6 +113,7 @@ void BRenderWidget::OnLoadSettings()
     ui.lineEdit_recursionDepth->setText(QString::number(config.GetRecursionDepth()));
     bool anti_aliasing = config.AntiAliasingOn();
     ui.checkBox_antiAliasing->setCheckState(anti_aliasing ? Qt::CheckState::Checked : Qt::CheckState::Unchecked);
+    ui.lineEdit_NumThreads->setText(QString::number(config.GetNumThreads()));
 
     ui.lineEdit_ConfigFile->setText(filePath);
     mSettingsFileLoaded = true;
@@ -178,6 +181,7 @@ void BRenderWidget::OnRender()
         config.SetImgHeight(ui.lineEdit_imgHeight->text().toInt());
         config.SetRecursionDepth(ui.lineEdit_recursionDepth->text().toInt());
         config.SetAntiAliasingOn(ui.checkBox_antiAliasing->isChecked());
+        config.SetNumThreads(ui.lineEdit_NumThreads->text().toInt());
         mModel.SetRenderingConfig(config);
 
         // Render using current configurations.

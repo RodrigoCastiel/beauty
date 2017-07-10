@@ -21,16 +21,21 @@ public:
     int GetImgHeight() const { return mHeight; }
     int GetRecursionDepth() const { return mRecursionDepth; }
     bool AntiAliasingOn() const { return mAntiAliasing; }
+    int GetNumThreads() const { return mNumThreads; }
 
     void SetImgWidth(int width) { mWidth = width; }
     void SetImgHeight(int height) { mHeight = height; }
     void SetRecursionDepth(int depth) { mRecursionDepth = depth; }
     void SetAntiAliasingOn(bool on) { mAntiAliasing = on; }
+    void SetNumThreads(int numThreads) { mNumThreads = numThreads; }
 
 private:
     // Image dimensions.
     int mWidth   { 800 };
     int mHeight  { 600 };
+
+    // Multi-threading.
+    int mNumThreads { 1 };
 
     // Recursion.
     int mRecursionDepth { 4 };
@@ -38,7 +43,5 @@ private:
     // Image enhancement.
     bool mAntiAliasing { false };
 };
-
-
 
 }  // namespace renderer.

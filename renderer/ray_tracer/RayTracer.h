@@ -12,6 +12,8 @@
 namespace renderer
 {
 
+const float kGradientThreshold = 0.05f;
+
 class RayTracer
 {
 public:
@@ -20,16 +22,16 @@ public:
     // Performs Ray Tracing algorithm and outputs to input image buffer.
     // imgBuffer dimensions must be at least w x h (in rendering config).
     // imgBuffer must follow the 32-bit format '0xAARRGGBB'.
-    void Render(const Scene & scene, ImgBuffer && imgBuffer);
+    void Render(const Scene & scene, ImgBuffer & imgBuffer) const;
 
     // Performs a parallel Ray Tracing algorithm using 'numThreads'.
-    void ParallelRender(const Scene & scene, ImgBuffer && imgBuffer,
-                        int numThreads = 8);
+    void ParallelRender(const Scene & scene, ImgBuffer & imgBuffer,
+                        int numThreads = 8) const;
 
     // Performs an adaptive anti-aliasing Ray Tracing on input buffer to
     // enhance details. The image must be rendered prior to this call.
-    void AdaptiveAntiAliasing(const Scene & scene, ImgBuffer && imgBuffer,
-                              int numThreads = 8, int numSuperSample = 8);
+    void AdaptiveAntiAliasing(const Scene & scene, ImgBuffer & imgBuffer,
+                              int numThreads = 8, int numSuperSample = 8) const;
 
     // +++++ Getters / Setters +++++ ------------------------------------------
 
@@ -41,6 +43,14 @@ public:
     const RenderingConfig & GetRenderingConfig() const { return mConfiguration; }
 
 private:  // Methods.
+
+    // Computes the color **carried** by a light ray through 'scene'.
+    // r: normalized ray direction.
+    // O: ray origin point.
+    // depth: number of bounces of ray.
+    // scene: input scene through which the ray walks.
+    glm::vec4 TraceRay(const glm::vec3 & r, const glm::vec3 & O,
+                       int depth, const Scene & scene) const;
 
 private:  // Attributes.
 

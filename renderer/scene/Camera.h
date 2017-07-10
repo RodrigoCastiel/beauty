@@ -23,6 +23,7 @@ public:
     // Setters and getters.
     inline void SetPosition(const glm::vec3 & pos) { mPos = pos; }
     inline void SetRotation(const glm::vec3 & rot) { mRot = rot; }
+    inline void SetScale(float scale) { mScale = glm::vec3(scale); }
 
     inline void SetFOVy(float fovy) { mFovy = fovy; }
     inline float GetFOVy() { return mFovy; }
