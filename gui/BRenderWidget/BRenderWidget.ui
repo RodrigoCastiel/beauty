@@ -419,7 +419,7 @@
                  </font>
                 </property>
                 <property name="text">
-                 <string>default.scene</string>
+                 <string/>
                 </property>
                </widget>
               </item>
@@ -487,7 +487,7 @@
                  </font>
                 </property>
                 <property name="text">
-                 <string>default.jpg</string>
+                 <string>../pictures/default.jpg</string>
                 </property>
                </widget>
               </item>

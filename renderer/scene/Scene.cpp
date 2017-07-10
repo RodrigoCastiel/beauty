@@ -73,7 +73,7 @@ glm::vec3 Scene::TraceRay(const glm::vec3 & r, const glm::vec3 & O, int depth) c
             glm::vec3 refracted_color(0.0f);
             glm::vec3 reflected_color(0.0f);
 
-            // Reflect if specular coeffiecient is non-zero.
+            // Reflect if specular coefficient is non-zero.
             if (Ks[0] > kEpsilon && Ks[1] > kEpsilon && Ks[2] > kEpsilon)
             {
                 reflected_color = Scene::TraceRay(glm::normalize(glm::reflect(r, n)), f_pos, depth - 1);
@@ -220,7 +220,8 @@ int Scene::NearestSphere(const glm::vec3 & r, const glm::vec3 & O,
 // FILE LOADING METHODS
 
 // Parse 3-tuple attributes, such as position, color and so on.
-bool ParseAttribute(std::ifstream & file, const std::string & expectedName, glm::vec3 & v)
+bool ParseAttribute(std::ifstream & file, const std::string & expectedName, 
+    glm::vec3 & v, std::string & outputMessage)
 {
     std::string name;
     file >> name;
@@ -228,7 +229,7 @@ bool ParseAttribute(std::ifstream & file, const std::string & expectedName, glm:
 
     if (file.fail() || (name != expectedName))
     {
-        std::cerr << "ERROR Scene file parsing error - expected attribute " << expectedName << ".\n";
+        outputMessage = "Scene file parsing error - expected attribute " + expectedName + ".\n";
         return false;
     }
 
@@ -236,7 +237,7 @@ bool ParseAttribute(std::ifstream & file, const std::string & expectedName, glm:
 
     if (file.fail())
     {
-        std::cerr << "ERROR Scene file parsing error - incorrect attribute " << expectedName << ".\n";
+        outputMessage = "Scene file parsing error - incorrect attribute " + expectedName + ".\n";
         return false;
     }
 
@@ -244,7 +245,8 @@ bool ParseAttribute(std::ifstream & file, const std::string & expectedName, glm:
 }
 
 // Parse a single attribute, such as shininess.
-bool ParseAttribute(std::ifstream & file, const std::string & expectedName, float & a)
+bool ParseAttribute(std::ifstream & file, const std::string & expectedName, 
+    float & a, std::string & outputMessage)
 {
     std::string name;
     file >> name;
@@ -252,7 +254,7 @@ bool ParseAttribute(std::ifstream & file, const std::string & expectedName, floa
 
     if (file.fail() || (name != expectedName))
     {
-        std::cerr << "ERROR Scene file parsing error - expected attribute " << expectedName << ".\n";
+        outputMessage = "Scene file parsing error - expected attribute " + expectedName + ".\n";
         return false;
     }
 
@@ -260,7 +262,7 @@ bool ParseAttribute(std::ifstream & file, const std::string & expectedName, floa
 
     if (file.fail())
     {
-        std::cerr << "ERROR Scene file parsing error - incorrect attribute " << expectedName << ".\n";
+        outputMessage = "Scene file parsing error - incorrect attribute " + expectedName + ".\n";
         return false;
     }
 
@@ -276,50 +278,36 @@ void Scene::Log(std::ostream & stream)
     stream << "TOTAL ..................... " << mTriangles.size() + mSpheres.size() + mLights.size() << ";" << std::endl;
 }
 
-bool Scene::Load(const std::string & filePath)
+bool Scene::Load(const std::string & filePath, std::string & outputMessage)
 {
     // Open input file.
     std::ifstream file(filePath, std::ifstream::in);
 
     if (!file.is_open())  // Failure - not good.
     {
-        std::cerr << "ERROR Scene file at " << filePath << " couldn't be opened." << std::endl;
+        outputMessage = "Scene file at '" + filePath + "' couldn't be opened.\n";
         return false;
     }
 
     float n_refr = 1.00f;
 
-    // Read number of objects.
-    int numObjects = 0;
-    file >> numObjects;
-
-    // Validate number of objects.
-    if (numObjects < 0)
-    {
-        std::cerr << "ERROR Scene file parsing error - number of objects must be non-negative." << std::endl;
-        return false;
-    }
-
     // Read ambient light.
-    if (!ParseAttribute(file, "amb:", mAmbLight))
+    if (!ParseAttribute(file, "amb:", mAmbLight, outputMessage))
     {
         return false;
     }
 
     // Read each object data.
-    for (int k = 0; k < numObjects; k++)
+    while (true)
     {
         // Read type of object.
         std::string type;
         file >> type;
         std::transform(type.begin(), type.end(), type.begin(), ::tolower);
 
-        //std::cout << "obj_type = " << type << std::endl;
-
         if (file.fail())
         {
-            std::cerr << "WARNING Scene file parsing error - expected an object (number " << (k + 1) << ")." << std::endl;
-            continue;
+            break;
         }
 
         if (type == "triangle")  // Triangle.
@@ -332,11 +320,11 @@ bool Scene::Load(const std::string & filePath)
                 glm::vec3 Kd, Ks, n;
                 float shininess;
 
-                if (!(ParseAttribute(file, "pos:", triangle.v[i]) &&
-                      ParseAttribute(file, "nor:", n) &&
-                      ParseAttribute(file, "dif:", Kd) &&
-                      ParseAttribute(file, "spe:", Ks) &&
-                      ParseAttribute(file, "shi:", shininess)
+                if (!(ParseAttribute(file, "pos:", triangle.v[i], outputMessage) &&
+                      ParseAttribute(file, "nor:", n, outputMessage) &&
+                      ParseAttribute(file, "dif:", Kd, outputMessage) &&
+                      ParseAttribute(file, "spe:", Ks, outputMessage) &&
+                      ParseAttribute(file, "shi:", shininess, outputMessage)
                     ))   // Failure, no new triangle.
                 {
                     std::cout << "\tRefer to triangle number " << mTriangles.size() << ".\n";
@@ -358,11 +346,11 @@ bool Scene::Load(const std::string & filePath)
             Sphere sphere;
             SphereAttrib attrib;
 
-            if (ParseAttribute(file, "pos:", sphere.pos) &&
-                ParseAttribute(file, "rad:", sphere.radius) &&
-                ParseAttribute(file, "dif:", attrib.Kd) &&
-                ParseAttribute(file, "spe:", attrib.Ks) &&
-                ParseAttribute(file, "shi:", attrib.shininess)
+            if (ParseAttribute(file, "pos:", sphere.pos, outputMessage) &&
+                ParseAttribute(file, "rad:", sphere.radius, outputMessage) &&
+                ParseAttribute(file, "dif:", attrib.Kd, outputMessage) &&
+                ParseAttribute(file, "spe:", attrib.Ks, outputMessage) &&
+                ParseAttribute(file, "shi:", attrib.shininess, outputMessage)
                 )   // Success - new sphere.
             {
                 attrib.n_refr = n_refr;
@@ -371,7 +359,7 @@ bool Scene::Load(const std::string & filePath)
             }
             else  // Failure, no new sphere.
             {
-                std::cout << "\tRefer to sphere number " << mSpheres.size() << ".\n";
+                //outputMessage += "\tRefer to sphere number " << std::string(mSpheres.size()) << ".\n";
                 return false;
             }
         }
@@ -379,52 +367,51 @@ bool Scene::Load(const std::string & filePath)
         {
             Light light;
 
-            if (ParseAttribute(file, "pos:", light.pos) &&
-                ParseAttribute(file, "col:", light.col)
+            if (ParseAttribute(file, "pos:", light.pos, outputMessage) &&
+                ParseAttribute(file, "col:", light.col, outputMessage)
                 )  // Success - new light source.
             {
                 mLights.push_back(light);
             }
             else
             {
-                std::cout << "\tRefer to light number " << mLights.size() << ".\n";
+                //std::cout << "\tRefer to light number " << mLights.size() << ".\n";
                 return false;
             }
         }
         else if (type == "obj")  // 3D Obj.
         {
             // DISABLED!. 
-            /*std::string path;
+            std::string path;
             if (file >> path)
             {
-                Scene::LoadObj(path);
-            }*/
+                //Scene::LoadObj(path);
+            }
         }
         else if (type == "n_refr")  // Specify new index of refraction.
         {
-            k--;
             if (!(file >> n_refr))
             {
-                std::cerr << "ERROR Scene file parsing error - expected n_refr value.\n";
+                outputMessage = "Scene file parsing error - expected n_refr value.\n";
             }
         }
         else if (type == "camera")
         {
             glm::vec3 pos, rot;
 
-            k--;
-            if (ParseAttribute(file, "pos:", pos) &&
-                ParseAttribute(file, "rot:", rot)
+            if (ParseAttribute(file, "pos:", pos, outputMessage) &&
+                ParseAttribute(file, "rot:", rot, outputMessage)
                 )  // Success - new camera configuration.
             {
-                mCamera->SetPosition(pos);
-                mCamera->SetRotation(rot);
+                mCamera.SetPosition(pos);
+                mCamera.SetRotation(rot);
+
             }
         }
         // INSERT HERE NEW TYPES OF OBJECT.
         else  // Invalid object.
         {
-            std::cerr << "ERROR Scene file parsing error - invalid object type: '" << type << "'." << std::endl;
+            outputMessage = "Scene file parsing error - invalid object type: '" + type + "'.\n";
             return false;
         }
     }

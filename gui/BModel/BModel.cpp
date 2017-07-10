@@ -25,12 +25,12 @@ void BModel::Render()
 {
     // Load and parse scene file.
     renderer::Scene scene;
-    bool success = scene.Load(mSceneFilePath);
-    // TODO.
+    std::string outputMessage;
+    bool success = scene.Load(mSceneFilePath, outputMessage);
 
     if (!success)
     {
-        throw RenderingException("ERROR - parsing scene file.");
+        throw RenderingException(outputMessage.data());
     }
 
     // Render using current configurations.

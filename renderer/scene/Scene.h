@@ -14,7 +14,6 @@
 
 // class Scene stores all scene, including triangles, spheres, light
 // sources and camera.
-//
 // In this version, there is no spatial data structure optimization.
 
 namespace renderer
@@ -30,13 +29,12 @@ class Scene
 {
 public:
     // Constructor.
-    Scene() 
-    {
-        mCamera = new Camera();
-    }
+    Scene() { }
 
-    // Loads scene from a file.
-    bool Load(const std::string & filePath);
+    // Loads (parses) scene from a file.
+    // Returns TRUE if scene was successfully loaded.
+    // Returns FALSE otherwise.
+    bool Load(const std::string & filePath, std::string & outputMessage);
 
     // Loads .obj from.
     //bool LoadObj(const std::string & objFilePath);
@@ -63,11 +61,11 @@ public:
     void Log(std::ostream & stream);
 
     // Returns camera.
-    Camera* GetCamera() const { return mCamera; }
+    const Camera & GetCamera() const { return mCamera; }
 
 private:
     // Camera.
-    Camera* mCamera { nullptr };
+    Camera mCamera;
 
     // List of all triangles 
     // and list of all corresponding attributes.

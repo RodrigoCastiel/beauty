@@ -120,7 +120,7 @@ void BRenderWidget::OnSaveSettingsAs()
 {
     // Always ask a new file path.
     QString filePath = QFileDialog::getSaveFileName(this, tr("Save .config file as"), 
-                                                        "", tr("CONFIG (*.config);"));
+                                                    "../scenes/", tr("CONFIG (*.config);"));
     if (filePath.isEmpty())
         return;
         
@@ -150,7 +150,8 @@ void BRenderWidget::OnSaveSettingsAs()
 
 void BRenderWidget::OnSceneFileBrowse()
 {
-    QString filePath = QFileDialog::getOpenFileName(this, tr("Open .scene file"), "", tr("SCENE (*.scene);"));
+    QString filePath = QFileDialog::getOpenFileName(this, tr("Open .scene file"), 
+        "../scenes/", tr("SCENE (*.scene);"));
 
     if (!filePath.isEmpty()) {
         ui.lineEdit_sceneFile->setText(filePath);
@@ -160,7 +161,8 @@ void BRenderWidget::OnSceneFileBrowse()
 
 void BRenderWidget::OnOutputImgBrowse()
 {
-    QString filePath = QFileDialog::getSaveFileName(this, tr("Render image file"), "", tr("JPEG (*.jpg); PNG (*.png)"));
+    QString filePath = QFileDialog::getSaveFileName(this, tr("Render image file"), 
+        "../pictures/", tr("JPEG (*.jpg); PNG (*.png)"));
     
     if (!filePath.isEmpty())
         ui.lineEdit_outputImg->setText(filePath);
@@ -178,13 +180,21 @@ void BRenderWidget::OnRender()
         config.SetAntiAliasingOn(ui.checkBox_antiAliasing->isChecked());
         mModel.SetRenderingConfig(config);
 
+        // Render using current configurations.
         mModel.Render();
         const QImage & renderedImage = mModel.GetImage();
         mImageViewerItem->setPixmap(QPixmap::fromImage(renderedImage));
+
+        // Save image.
+        renderedImage.save(ui.lineEdit_outputImg->text());
     }
     catch (RenderingException & e)
     {
-        // TODO: show some pop-up in case of error.
+        QMessageBox::warning(this, "Rendering Error", e.what());
+    }
+    catch (std::exception & e)
+    {
+        QMessageBox::warning(this, "Error", e.what());
     }
 }
 

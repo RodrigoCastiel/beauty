@@ -6,7 +6,7 @@ namespace renderer
 void RayTracer::Render(const Scene & scene, ImgBuffer && imgBuffer)
 {
     // TODO(Rodrigo Castiel).
-    Camera& camera = *(scene.GetCamera());
+    const Camera& camera = scene.GetCamera();
 
     for (int y = 0; y < imgBuffer.Height(); y++)
     {

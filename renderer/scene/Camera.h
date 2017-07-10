@@ -33,13 +33,9 @@ private:
     glm::vec3 mRot{ 0.0, 0.0, 0.0 };  // Rotation angles.
     glm::vec3 mScale{ 1.0, 1.0, 1.0 };  // Scales.
 
-                                        // glm::vec3 mPos   { -4.0, 3.0, 8.0};  // Center coordinates.
-                                        // glm::vec3 mRot   { 0.0, 0.0, 0.0};  // Rotation angles.
-                                        // glm::vec3 mScale { 1.0, 1.0, 1.0};  // Scales.
-
-                                        // Projection parameters
+    // Projection parameters
     float mFovy{ 3.141592f / 3.0f };
-    float mFarZ{ 100.0f };
+    float mFarZ{ 10000.0f };
     float mNearZ{ 0.01f };
 };
 
