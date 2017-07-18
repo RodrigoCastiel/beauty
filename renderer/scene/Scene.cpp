@@ -299,6 +299,17 @@ bool Scene::Load(const std::string & filePath, std::string & outputMessage)
                 mCamera.SetScale(scale);
             }
         }
+        else if (type == "background-color")
+        {
+            glm::vec3 rgb;
+            float alpha = 1.0f;
+
+            if (ParseAttribute(file, "rgb:", rgb, outputMessage)
+             && ParseAttribute(file, "alpha:", alpha, outputMessage))
+            {
+                mBackgroundColor = glm::vec4(rgb, alpha);
+            }
+        }
         // INSERT HERE NEW TYPES OF OBJECT.
         else  // Invalid object.
         {

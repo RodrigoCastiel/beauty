@@ -165,14 +165,17 @@ glm::vec4 RayTracer::TraceRay(const glm::vec3 & r, const glm::vec3 & O,
     if (depth > 0)
     {
         float t_triangle, t_sphere;
-        glm::vec3 intersection, barycentric;
-        glm::vec3 intersectionSphere, normalSphere;
+        glm::vec3 triangleIntersection, barycentric;
+        glm::vec3 sphereIntersection,  sphereNormal;
 
-        int nearestTriangleIndex = scene.NearestTriangle(r, O, intersection, barycentric, t_triangle);
-        int nearestSphereIndex = scene.NearestSphere(r, O, intersectionSphere, normalSphere, t_sphere);
+        // Search for nearest sphere and nearest triangle.
+        int nearestTriangleIndex = scene.NearestTriangle(r, O, triangleIntersection, barycentric, t_triangle);
+        int nearestSphereIndex   = scene.NearestSphere(r, O, sphereIntersection, sphereNormal, t_sphere);
 
         glm::vec3 f_pos, n, Kd, Ks;
         float alpha, n_refr = 1.0f;
+
+        // Compute lighting for nearest geometry.
 
         // Triangle only or triangle closer than sphere.
         if (((nearestTriangleIndex != -1) && (nearestSphereIndex == -1))
@@ -197,8 +200,8 @@ glm::vec4 RayTracer::TraceRay(const glm::vec3 & r, const glm::vec3 & O,
         {
             const SphereAttrib& attrib = scene.GetSphereAttrib(nearestSphereIndex);
 
-            f_pos = intersectionSphere;
-            n = normalSphere;
+            f_pos = sphereIntersection;
+            n = sphereNormal;
             Kd = attrib.Kd;
             Ks = attrib.Ks;
             alpha = attrib.shininess;
@@ -206,6 +209,8 @@ glm::vec4 RayTracer::TraceRay(const glm::vec3 & r, const glm::vec3 & O,
         }
         else // No intersection.
         {
+            //printf("No intersection!!\n");
+            //exit(0);
             return scene.GetBackgroundColor();
         }
 
@@ -269,6 +274,8 @@ glm::vec4 RayTracer::TraceRay(const glm::vec3 & r, const glm::vec3 & O,
     }
     else
     {
+        //printf("base case!\n");
+        //exit(0);
         return scene.GetBackgroundColor();
     }
 }

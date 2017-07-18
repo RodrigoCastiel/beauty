@@ -16,6 +16,9 @@
     <Filter Include="geometries">
       <UniqueIdentifier>{b2c3136e-a86c-4012-94a6-f0054c31e537}</UniqueIdentifier>
     </Filter>
+    <Filter Include="lighting">
+      <UniqueIdentifier>{bd9b0bc4-45ca-461e-bbf8-3fe63a227092}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="parsing\RenderingConfig.h">
