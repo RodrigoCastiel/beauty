@@ -214,7 +214,7 @@
              <item row="1" column="0">
               <widget class="QGroupBox" name="groupBox_5">
                <property name="title">
-                <string>Multi-threading</string>
+                <string>Optimization</string>
                </property>
                <layout class="QFormLayout" name="formLayout_4">
                 <item row="0" column="0">
@@ -231,6 +231,13 @@
                   </property>
                   <property name="alignment">
                    <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+                  </property>
+                 </widget>
+                </item>
+                <item row="1" column="0" colspan="2">
+                 <widget class="QCheckBox" name="checkBox_KdTree">
+                  <property name="text">
+                   <string>Use Kd-Tree</string>
                   </property>
                  </widget>
                 </item>

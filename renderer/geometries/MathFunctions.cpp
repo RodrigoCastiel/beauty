@@ -88,5 +88,101 @@ bool IntersectionRaySphere(const Sphere & sphere, const glm::vec3 & r, const glm
     }
 }
 
+bool IntersectionHalfSpaceTriangle(const Triangle & triangle, float value, int axis, int type)
+{
+    if (type >= 0) {  // greater than or equal to.
+        return (triangle.v[0][axis] >= value)
+            || (triangle.v[1][axis] >= value)
+            || (triangle.v[2][axis] >= value);
+    }
+    else {  // less than.
+        return (triangle.v[0][axis] <= value)
+            || (triangle.v[1][axis] <= value)
+            || (triangle.v[2][axis] <= value);
+    }
+}
+
+
+/* Ray-BoundingBox intersection.
+* REFERENCES
+* http://www.cs.utah.edu/~awilliam/box/box.pdf
+* Ray-box intersection using IEEE numerical properties to ensure that the
+* test is both robust and efficient, as described in:
+*
+*      Amy Williams, Steve Barrus, R. Keith Morley, and Peter Shirley
+*      "An Efficient and Robust Ray-Box Intersection Algorithm"
+*      Journal of graphics tools, 10(1):49-54, 2005
+*/
+bool IntersectionRayBB(const glm::vec3 & r, const glm::vec3 & O, const BoundingBox & bb)
+{
+    float tmin, tmax, tymin, tymax, tzmin, tzmax;
+    if (r.x >= 0) {
+        tmin = (bb.mMin.x - O.x) / r.x;
+        tmax = (bb.mMax.x - O.x) / r.x;
+    }
+    else {
+        tmin = (bb.mMax.x - O.x) / r.x;
+        tmax = (bb.mMin.x - O.x) / r.x;
+    }
+    if (r.y >= 0) {
+        tymin = (bb.mMin.y - O.y) / r.y;
+        tymax = (bb.mMax.y - O.y) / r.y;
+    }
+    else {
+        tymin = (bb.mMax.y - O.y) / r.y;
+        tymax = (bb.mMin.y - O.y) / r.y;
+    }
+    if ( (tmin > tymax) || (tymin > tmax) )
+        return false;
+
+    if (tymin > tmin)
+        tmin = tymin;
+    if (tymax < tmax)
+        tmax = tymax;
+    if (r.z >= 0) {
+        tzmin = (bb.mMin.z - O.z) / r.z;
+        tzmax = (bb.mMax.z - O.z) / r.z;
+    }
+    else {
+        tzmin = (bb.mMax.z - O.z) / r.z;
+        tzmax = (bb.mMin.z - O.z) / r.z;
+    }
+    if ( (tmin > tzmax) || (tzmin > tmax) )
+        return false;
+    if (tzmin > tmin)
+        tmin = tzmin;
+    if (tzmax < tmax)
+        tmax = tzmax;
+    //return ( (tmin < t1) && (tmax > t0) );
+
+    return true;//(tmax > 0.0f);
+}
+
+bool SubdivideTriangle(const Triangle & triangle, const TriangleAttrib& attrib, float value, int axis,
+    std::vector<Triangle> & newTriangles, std::vector<TriangleAttrib> & newAttribs)
+{
+    return false;
+}
+
+glm::vec3 SubsetVariance(const std::vector<int> & subset, const std::vector<glm::vec3> & points)
+{
+    glm::vec3 mean, variance;
+    int numIndices = static_cast<int>(subset.size());
+
+    for (int i = 0; i < numIndices; i++)
+        mean += points[subset[i]];
+    mean /= numIndices;
+
+    for (int i = 0; i < numIndices; i++) {
+        glm::vec3 diff = (points[subset[i]] - mean);
+        variance += diff*diff;
+    }
+    variance /= numIndices;
+
+    return variance;
+}
+
+
+
 }  // namespace renderer.
 

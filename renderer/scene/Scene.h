@@ -9,13 +9,13 @@
 #include <vector>
 
 #include "Camera.h"
+#include "../scene/KdTree.h"
 #include "../geometries/Primitives.h"
 #include "../geometries/MathFunctions.h"
 
 // class Scene stores all scene, including triangles, spheres, light
 // sources and camera.
 // It has methods for intersection, querying and .obj file loading.
-// In this version, there is no spatial data structure optimization.
 
 namespace renderer
 {
@@ -30,7 +30,7 @@ class Scene
 {
 public:
     // Constructor.
-    Scene() { }
+    Scene();
 
     // +++ Main Methods +++ ------------
 
@@ -55,6 +55,8 @@ public:
     // Computes per-fragment Phong Lighting given the current scene elements.
     glm::vec3 ComputePhongIllumination(const glm::vec3 & f_pos, const glm::vec3 & n, 
         const glm::vec3 & Kd, const glm::vec3 & Ks, float alpha) const;
+
+    bool LoadObj(const std::string & objFilepath);
 
     // Prints a log containing general Scene data.
     void Log(std::ostream & stream);
@@ -82,9 +84,21 @@ public:
     // Sets background color.
     void SetBackgroundColor(const glm::vec4 & color) { mBackgroundColor = color; }
 
+    void SetUseKdTree(bool on) { mUseKdTree = on; }
+
 private:
+    // Internal methods.
+    void BuildUpSpatialTree();
+
+private:
+    // Optimization.
+    bool mUseKdTree;
+
     // Camera.
     Camera mCamera;
+
+    // Relaxed 3D-tree for spatially storing triangle indices.
+    KdTree* mSpatialTree;
 
     // List of all triangles 
     // and list of all corresponding attributes.
@@ -98,7 +112,7 @@ private:
     // List of all light sources.
     std::vector<Light> mLights;
     glm::vec3 mAmbLight;
-    glm::vec4 mBackgroundColor { 0.0f, 0.0f, 0.0f, 1.0f };
+    glm::vec4 mBackgroundColor;
 };
 
 

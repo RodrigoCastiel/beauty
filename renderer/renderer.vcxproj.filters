@@ -16,9 +16,6 @@
     <Filter Include="geometries">
       <UniqueIdentifier>{b2c3136e-a86c-4012-94a6-f0054c31e537}</UniqueIdentifier>
     </Filter>
-    <Filter Include="lighting">
-      <UniqueIdentifier>{bd9b0bc4-45ca-461e-bbf8-3fe63a227092}</UniqueIdentifier>
-    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="parsing\RenderingConfig.h">
@@ -42,6 +39,9 @@
     <ClInclude Include="scene\Camera.h">
       <Filter>scene</Filter>
     </ClInclude>
+    <ClInclude Include="scene\KdTree.h">
+      <Filter>scene</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="parsing\RenderingConfig.cpp">
@@ -58,6 +58,12 @@
     </ClCompile>
     <ClCompile Include="scene\Camera.cpp">
       <Filter>scene</Filter>
+    </ClCompile>
+    <ClCompile Include="scene\KdTree.cpp">
+      <Filter>scene</Filter>
+    </ClCompile>
+    <ClCompile Include="geometries\Primitives.cpp">
+      <Filter>geometries</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

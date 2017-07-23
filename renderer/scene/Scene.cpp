@@ -10,6 +10,14 @@
 namespace renderer
 {
 
+Scene::Scene() 
+: mSpatialTree(nullptr)
+, mUseKdTree(false)
+, mBackgroundColor { 0.0f, 0.0f, 0.0f, 1.0f }
+{ 
+
+}
+
 glm::vec3 Scene::ComputePhongIllumination(const glm::vec3 & f_pos, const glm::vec3 & n,
     const glm::vec3 & Kd, const glm::vec3 & Ks, float alpha) const
 {
@@ -35,6 +43,8 @@ glm::vec3 Scene::ComputePhongIllumination(const glm::vec3 & f_pos, const glm::ve
 
             // Basic lighting - Phong model.
             Id += light.col * Kd * std::max(dot_l_n, 0.0f);
+
+            // WARNING: temporary (specular lighting is modeled in reflectance and refractance).
             //Is += light.col * Ks * std::pow(std::max(dot_l_r, 0.0f), alpha);
         }
     }
@@ -45,6 +55,9 @@ glm::vec3 Scene::ComputePhongIllumination(const glm::vec3 & f_pos, const glm::ve
 int Scene::NearestTriangle(const glm::vec3 & r, const glm::vec3 & O,
     glm::vec3 & intersection, glm::vec3 & baryCoord, float & t) const
 {
+    if (mUseKdTree)
+        return mSpatialTree->NearestTriangle(r, O, intersection, baryCoord, t);
+
     float nearest_t = std::numeric_limits<float>::max();
     int nearestTriangleIndex = -1;
 
@@ -104,6 +117,7 @@ int Scene::NearestSphere(const glm::vec3 & r, const glm::vec3 & O,
 
     return nearestSphereIndex;
 }
+
 
 // ============================================================================================= //
 // FILE LOADING METHODS
@@ -270,11 +284,10 @@ bool Scene::Load(const std::string & filePath, std::string & outputMessage)
         }
         else if (type == "obj")  // 3D Obj.
         {
-            // DISABLED!. 
             std::string path;
             if (file >> path)
             {
-                //Scene::LoadObj(path);
+                Scene::LoadObj(path);
             }
         }
         else if (type == "n_refr")  // Specify new index of refraction.
@@ -318,14 +331,25 @@ bool Scene::Load(const std::string & filePath, std::string & outputMessage)
         }
     }
 
+    this->BuildUpSpatialTree();
+
     return true;
+}
+
+void Scene::BuildUpSpatialTree()
+{
+    int capacity = 64;
+    mSpatialTree = new KdTree(mTriangles, capacity);
+    mSpatialTree->BuildFromListOfTriangles();
+    //mSpatialTree->Print();
 }
 
 // ============================================================================================= //
 
-/*
+
 bool Scene::LoadObj(const std::string & objFilepath)
 {
+    printf("LOADING!!\n\n\n");
     FILE* inFile = fopen(objFilepath.c_str(), "r");
 
     // Successfully opened the file.
@@ -416,11 +440,13 @@ bool Scene::LoadObj(const std::string & objFilepath)
                 Triangle triangle;
                 TriangleAttrib attrib;
 
-                attrib.Ks = glm::mat3(glm::vec3(.7), glm::vec3(.7), glm::vec3(.7));
-                attrib.Kd = glm::mat3(glm::vec3(1.0, 0.0, 0.0),
-                    glm::vec3(1.0, 0.0, 0.0),
-                    glm::vec3(1.0, 0.0, 0.0));
-                attrib.shininess = glm::vec3(200);
+                // Material.
+                glm::vec3 diff(0.95164, 0.75648, 0.22648);
+                glm::vec3 spec(0.228281, 0.355802, 0.466065);
+
+                attrib.Kd = glm::mat3(diff, diff, diff);
+                attrib.Ks = glm::mat3(spec, spec, spec);
+                attrib.shininess = glm::vec3(51.2);
                 attrib.n_refr = 1.0f;
 
                 // Vertex A.
@@ -447,6 +473,12 @@ bool Scene::LoadObj(const std::string & objFilepath)
                 attrib.n[2][1] = normals[3 * c_vn + 1];
                 attrib.n[2][2] = normals[3 * c_vn + 2];
 
+                /*for (int i = 0; i < 3; i++) {
+                    for (int j = 0; j < 3; j++) {
+                        attrib.Kd[i][j] = std::abs(attrib.n[i][j]);
+                    }
+                }*/
+
                 mTriangles.push_back(triangle);
                 mTriangleAttribList.push_back(attrib);
             }
@@ -466,5 +498,5 @@ bool Scene::LoadObj(const std::string & objFilepath)
     }
 }
 
-*/
+
 }  // namespace renderer.

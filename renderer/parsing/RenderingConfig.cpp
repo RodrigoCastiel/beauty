@@ -29,6 +29,8 @@ bool RenderingConfig::LoadFromFile(const std::string & filePath)
             mAntiAliasing = (value != 0);
         else if (property == "num-threads")
             mNumThreads = (value > 0) ? value : 1;
+        else if (property == "use-kd-tree")
+            mUseKdTree = (value != 0);
     }
 
     return true;
@@ -45,6 +47,7 @@ bool RenderingConfig::SaveIntoFile(const std::string & filePath)
     file << "depth " << mRecursionDepth << std::endl;
     file << "anti-aliasing " << mAntiAliasing << std::endl;
     file << "num-threads " << mNumThreads << std::endl;
+    file << "use-kd-tree " << mUseKdTree  << std::endl;
 
     return true;
 }

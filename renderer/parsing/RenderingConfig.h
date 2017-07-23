@@ -22,20 +22,23 @@ public:
     int GetRecursionDepth() const { return mRecursionDepth; }
     bool AntiAliasingOn() const { return mAntiAliasing; }
     int GetNumThreads() const { return mNumThreads; }
+    bool UsesKdTree() const { return mUseKdTree; }
 
     void SetImgWidth(int width) { mWidth = width; }
     void SetImgHeight(int height) { mHeight = height; }
     void SetRecursionDepth(int depth) { mRecursionDepth = depth; }
     void SetAntiAliasingOn(bool on) { mAntiAliasing = on; }
     void SetNumThreads(int numThreads) { mNumThreads = numThreads; }
+    void SetUseKdTree(bool on) { mUseKdTree = on; }
 
 private:
     // Image dimensions.
     int mWidth   { 800 };
     int mHeight  { 600 };
 
-    // Multi-threading.
+    // Multi-threading and optimization.
     int mNumThreads { 1 };
+    bool mUseKdTree { false };
 
     // Recursion.
     int mRecursionDepth { 4 };

@@ -74,6 +74,7 @@ void BRenderWidget::OnSaveSettings()
     config.SetRecursionDepth(ui.lineEdit_recursionDepth->text().toInt());
     config.SetAntiAliasingOn(ui.checkBox_antiAliasing->isChecked());
     config.SetNumThreads(ui.lineEdit_NumThreads->text().toInt());
+    config.SetUseKdTree(ui.checkBox_KdTree->isChecked());
 
     // Write into file.
     bool success = config.SaveIntoFile(filePath.toStdString());
@@ -114,6 +115,8 @@ void BRenderWidget::OnLoadSettings()
     bool anti_aliasing = config.AntiAliasingOn();
     ui.checkBox_antiAliasing->setCheckState(anti_aliasing ? Qt::CheckState::Checked : Qt::CheckState::Unchecked);
     ui.lineEdit_NumThreads->setText(QString::number(config.GetNumThreads()));
+    bool use_kd_tree = config.UsesKdTree();
+    ui.checkBox_KdTree->setCheckState(use_kd_tree ? Qt::CheckState::Checked : Qt::CheckState::Unchecked);
 
     ui.lineEdit_ConfigFile->setText(filePath);
     mSettingsFileLoaded = true;
@@ -137,6 +140,7 @@ void BRenderWidget::OnSaveSettingsAs()
     config.SetImgHeight(ui.lineEdit_imgHeight->text().toInt());
     config.SetRecursionDepth(ui.lineEdit_recursionDepth->text().toInt());
     config.SetAntiAliasingOn(ui.checkBox_antiAliasing->isChecked());
+    config.SetUseKdTree(ui.checkBox_KdTree->isChecked());
     mModel.SetRenderingConfig(config);
 
     // Write into file.
@@ -182,7 +186,11 @@ void BRenderWidget::OnRender()
         config.SetRecursionDepth(ui.lineEdit_recursionDepth->text().toInt());
         config.SetAntiAliasingOn(ui.checkBox_antiAliasing->isChecked());
         config.SetNumThreads(ui.lineEdit_NumThreads->text().toInt());
+        config.SetUseKdTree(ui.checkBox_KdTree->isChecked());
         mModel.SetRenderingConfig(config);
+
+        QString info = config.UsesKdTree() ? "Using Kd-Tree" : "Not Using Kd-Tree";
+        QMessageBox::information(this, "Starting Rendering", info);
 
         // Render using current configurations.
         mModel.Render();

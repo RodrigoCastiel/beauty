@@ -25,13 +25,16 @@
     <ClInclude Include="parsing\RenderingConfig.h" />
     <ClInclude Include="ray_tracer\RayTracer.h" />
     <ClInclude Include="scene\Camera.h" />
+    <ClInclude Include="scene\KdTree.h" />
     <ClInclude Include="scene\Scene.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="geometries\MathFunctions.cpp" />
+    <ClCompile Include="geometries\Primitives.cpp" />
     <ClCompile Include="parsing\RenderingConfig.cpp" />
     <ClCompile Include="ray_tracer\RayTracer.cpp" />
     <ClCompile Include="scene\Camera.cpp" />
+    <ClCompile Include="scene\KdTree.cpp" />
     <ClCompile Include="scene\Scene.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">

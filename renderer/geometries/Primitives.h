@@ -39,5 +39,18 @@ struct SphereAttrib  // Sphere material attributes.
     float n_refr;  // Index of refraction.
 };
 
+struct BoundingBox
+{
+    glm::vec3 mMin;  // (xmin, ymin, zmin).
+    glm::vec3 mMax;  // (xmax, ymax, zmax).
+
+    // Splits bounding box orthogonally to axis at 'value'.
+    // Assumes that  xmin < value < xmax.
+    // If side > 0, returns the greater-than bb.
+    // Returns the less-than bb, otherwise.
+    BoundingBox Split(float value, int axis, int side) const;
+    void Print() const;
+};
+
 
 }  // namespace renderer.

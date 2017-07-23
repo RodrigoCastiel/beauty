@@ -35,6 +35,7 @@ void BModel::Render()
 
     // Render using current configurations.
     scene.Log(std::cout);
+    scene.SetUseKdTree(mRayTracer.GetRenderingConfig().UsesKdTree());
     int w = mRayTracer.GetRenderingConfig().GetImgWidth();
     int h = mRayTracer.GetRenderingConfig().GetImgHeight();
     renderer::ImgBuffer imgBuffer = {mImgBuffer.data(), w, h};
